@@ -1,7 +1,7 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 output: 
-  html_document:
+  html_document: 
     keep_md: true
 ---
 
@@ -42,17 +42,17 @@ The <b>mean</b> and <b>median</b> total number of steps taken per day are respec
 
 ## What is the average daily activity pattern?
 ```{r, echo=TRUE}
-  ##table containing the total number of steps for    each interval
-  total_steps_interval <- summarise(group_by(data, interval), t_steps = sum(steps, na.rm = TRUE))
+  ##table containing the average number of steps taken, averaged across all days for each interval
+  avg_steps_interval <- summarise(group_by(data, interval), avg_steps = mean(steps, na.rm = TRUE))
 
   ##time series plot
-  with(total_steps_interval, plot(interval, t_steps, type = "l", main = "Plot of average number of steps taken by Interval", ylab = "Average number of steps"))
+  with(avg_steps_interval, plot(interval, avg_steps, type = "l", main = "Plot of average number of steps taken by Interval", ylab = "Average number of steps"))
 
   ##5 minute interval with maximum number of steps
-  max_total_steps_interval <- total_steps_interval[which(total_steps_interval$t_steps == max(total_steps_interval$t_steps)),1]
+  max_avg_steps_interval <- avg_steps_interval[which(avg_steps_interval$avg_steps == max(avg_steps_interval$avg_steps)),1]
 ```
 
-The <b>`r max_total_steps_interval`</b> interval contains the maximum number of steps(<b>`r max(total_steps_interval$t_steps)`</b>)
+The <b>`r max_avg_steps_interval`</b> interval contains the maximum number of steps(<b>`r max(avg_steps_interval$avg_steps)`</b>)
 
 ## Inputing missing values
 ```{r, echo=TRUE}
@@ -63,9 +63,9 @@ The <b>`r max_total_steps_interval`</b> interval contains the maximum number of 
 There are <b>`r sum_nas`</b> missing values in the data set
 
 ```{r, echo=TRUE}
-  ##filling in all of the missing values in the      dataset using the mean value for that 5-minute interval.
+  ##filling in all of the missing values in the dataset using the mean value for that 5-minute interval.
   new_data <- data
-  new_data[is.na(data$steps),1] <- total_steps_interval[total_steps_interval == new_data[is.na(new_data$steps),3], 2]
+  new_data[is.na(data$steps),1] <- avg_steps_interval[avg_steps_interval == new_data[is.na(new_data$steps),3], 2]
 
   ##new table containing the total number of steps for each day
   new_total_steps <- summarise(group_by(new_data, date), t_steps = sum(steps, na.rm = TRUE))
