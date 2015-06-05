@@ -5,9 +5,8 @@ output:
     keep_md: true
 ---
 
-
 ## Loading and preprocessing the data
-```{r, echo = TRUE}
+```{r, echo = TRUE, cache=TRUE}
   ##loading required libraries
   library(dplyr)
   library(datasets)
@@ -27,7 +26,7 @@ output:
   ##table containing the total number of steps for    each day
   total_steps <- summarise(group_by(data, date), t_steps = sum(steps, na.rm = TRUE))
 
-  ##plotting histogram
+  ##plotting histogram for total steps taken per day
   with(total_steps, hist(t_steps, main = "Histogram of Total Steps taken", xlab = "Total Steps"))
 
   ##calculate the mean and median total number of steps taken per day
@@ -45,7 +44,7 @@ The <b>mean</b> and <b>median</b> total number of steps taken per day are respec
   ##table containing the average number of steps taken, averaged across all days for each interval
   avg_steps_interval <- summarise(group_by(data, interval), avg_steps = mean(steps, na.rm = TRUE))
 
-  ##time series plot
+  ##time series plot of the average number of steps taken, averaged across all days for each interval
   with(avg_steps_interval, plot(interval, avg_steps, type = "l", main = "Plot of average number of steps taken by Interval", ylab = "Average number of steps"))
 
   ##5 minute interval with maximum number of steps
@@ -97,9 +96,11 @@ The <b>mean</b> and <b>median</b> total number of steps taken per day are respec
   new_data[weekend_grep, 4] <- "weekend"
 
   ##new dataset showing average number of steps taken averaged across all weekday days or weekend days
-  week_total_steps <- transform(week_total_steps, when = factor(when))
+  new_avg_steps <- summarise(group_by(new_data, when,interval), avg_steps = mean(steps, na.rm = TRUE))
 
-  xyplot(t_steps ~ interval | when, data = week_total_steps, layout = c(1, 2), type = "l", ylab = "Number of steps", xlab = "Interval")
+  week_total_steps <- transform(new_data, when = factor(when))
+
+  xyplot(avg_steps ~ interval | when, data = new_avg_steps, layout = c(1, 2), type = "l", ylab = "Number of steps", xlab = "Interval")
   
   
 ```

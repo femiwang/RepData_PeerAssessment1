@@ -1,16 +1,26 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document: 
-    keep_md: true
----
-
+# Reproducible Research: Peer Assessment 1
 
 ## Loading and preprocessing the data
 
 ```r
   ##loading required libraries
   library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+## 
+## The following object is masked from 'package:stats':
+## 
+##     filter
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
   library(datasets)
   library(lattice)
 
@@ -29,11 +39,11 @@ output:
   ##table containing the total number of steps for    each day
   total_steps <- summarise(group_by(data, date), t_steps = sum(steps, na.rm = TRUE))
 
-  ##plotting histogram
+  ##plotting histogram for total steps taken per day
   with(total_steps, hist(t_steps, main = "Histogram of Total Steps taken", xlab = "Total Steps"))
 ```
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
 
 ```r
   ##calculate the mean and median total number of steps taken per day
@@ -51,11 +61,11 @@ The <b>mean</b> and <b>median</b> total number of steps taken per day are respec
   ##table containing the average number of steps taken, averaged across all days for each interval
   avg_steps_interval <- summarise(group_by(data, interval), avg_steps = mean(steps, na.rm = TRUE))
 
-  ##time series plot
+  ##time series plot of the average number of steps taken, averaged across all days for each interval
   with(avg_steps_interval, plot(interval, avg_steps, type = "l", main = "Plot of average number of steps taken by Interval", ylab = "Average number of steps"))
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 ```r
   ##5 minute interval with maximum number of steps
@@ -86,7 +96,7 @@ There are <b>2304</b> missing values in the data set
   with(new_total_steps, hist(t_steps, main = "Histogram of Total Steps taken", xlab = "Total Steps"))
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
 ```r
   ##calculate the mean and median total number of   steps taken per day
@@ -113,17 +123,11 @@ The <b>mean</b> and <b>median</b> total number of steps taken per day are respec
   new_data[weekend_grep, 4] <- "weekend"
 
   ##new dataset showing average number of steps taken averaged across all weekday days or weekend days
-  week_total_steps <- transform(week_total_steps, when = factor(when))
+  new_avg_steps <- summarise(group_by(new_data, when,interval), avg_steps = mean(steps, na.rm = TRUE))
+
+  week_total_steps <- transform(new_data, when = factor(when))
+
+  xyplot(avg_steps ~ interval | when, data = new_avg_steps, layout = c(1, 2), type = "l", ylab = "Number of steps", xlab = "Interval")
 ```
 
-```
-## Error in transform(week_total_steps, when = factor(when)): object 'week_total_steps' not found
-```
-
-```r
-  xyplot(t_steps ~ interval | when, data = week_total_steps, layout = c(1, 2), type = "l", ylab = "Number of steps", xlab = "Interval")
-```
-
-```
-## Error in eval(substitute(groups), data, environment(x)): object 'week_total_steps' not found
-```
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
