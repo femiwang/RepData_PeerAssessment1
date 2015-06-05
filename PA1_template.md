@@ -74,7 +74,7 @@ The <b>mean</b> and <b>median</b> total number of steps taken per day are respec
 
 The <b>835</b> interval contains the maximum number of steps(<b>206.1698113</b>)
 
-## Inputing missing values
+## Imputing missing values
 
 ```r
   ##calculate the sum of missing values

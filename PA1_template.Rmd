@@ -6,7 +6,7 @@ output:
 ---
 
 ## Loading and preprocessing the data
-```{r, echo = TRUE, cache=TRUE}
+```{r, echo = TRUE}
   ##loading required libraries
   library(dplyr)
   library(datasets)
@@ -53,7 +53,7 @@ The <b>mean</b> and <b>median</b> total number of steps taken per day are respec
 
 The <b>`r max_avg_steps_interval`</b> interval contains the maximum number of steps(<b>`r max(avg_steps_interval$avg_steps)`</b>)
 
-## Inputing missing values
+## Imputing missing values
 ```{r, echo=TRUE}
   ##calculate the sum of missing values
   sum_nas <- sum(is.na(data$steps))

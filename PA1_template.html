@@ -114,8 +114,8 @@ img {
   max_avg_steps_interval &lt;- avg_steps_interval[which(avg_steps_interval$avg_steps == max(avg_steps_interval$avg_steps)),1]</code></pre>
 <p>The <b>835</b> interval contains the maximum number of steps(<b>206.1698113</b>)</p>
 </div>
-<div id="inputing-missing-values" class="section level2">
-<h2>Inputing missing values</h2>
+<div id="imputing-missing-values" class="section level2">
+<h2>Imputing missing values</h2>
 <pre class="r"><code>  ##calculate the sum of missing values
   sum_nas &lt;- sum(is.na(data$steps))</code></pre>
 <p>There are <b>2304</b> missing values in the data set</p>
